@@ -41,7 +41,7 @@ class Main extends React.Component {
       .split('/')
       .pop()
       .replace(/(\.[\w\d_-]+)$/i, '_parsed.csv');
-    const url = 'http://localhost:3001/upload';
+    const url = '/upload';
     const formData = new FormData();
     formData.append('file', this.state.file);
     formData.append('source', this.state.source);
