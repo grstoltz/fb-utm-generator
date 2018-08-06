@@ -6,6 +6,7 @@
   "scripts": {
     "server": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "npm build && git add . && git commit -m \"Building for production\" && git push",
     "build": "cd client && npm run build",
     "start": "concurrently --kill-others \"nodemon app.js\" \"npm run client\"",
     "client": "cd client && npm run start"
