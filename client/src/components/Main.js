@@ -13,11 +13,13 @@ import {
   Form,
   Input
 } from 'semantic-ui-react';
+import Footer from './Footer';
 
 class Main extends React.Component {
   state = {
     file: null,
     status: null,
+    error: null,
     source: 'facebook.com',
     medium: 'cpc'
   };
@@ -62,9 +64,9 @@ class Main extends React.Component {
         link.click();
         this.setState({ file: null, status: null });
       })
-      .catch(err =>
+      .catch(error =>
         this.setState({
-          status: `There was an error of ${err}, please try again later`
+          error
         })
       );
   };
@@ -103,8 +105,10 @@ class Main extends React.Component {
                   <Header as="h2" color="blue" textAlign="center">
                     Facebook UTM Generator
                   </Header>
-                  {this.state.message ? (
-                    <Message>{this.state.message}</Message>
+                  {this.state.error ? (
+                    <Message>
+                      An error has occured, please try again later.
+                    </Message>
                   ) : (
                     <div />
                   )}
@@ -171,26 +175,7 @@ class Main extends React.Component {
               </Grid.Row>
             </Grid>
           </Container>
-          <Container>
-            <Grid>
-              <Grid.Row style={{ marginTop: '3em' }} columns={3}>
-                <Grid.Column>
-                  <strong>Step 1:</strong> Download a .csv of the campaigns from
-                  Facebook Ads Manager that you need UTM parameters for.
-                </Grid.Column>
-                <Grid.Column>
-                  <strong>Step 2:</strong> Upload the file to the parser above
-                  with the UTM parameters for source and medium that you use.
-                </Grid.Column>
-                <Grid.Column>
-                  <strong>Step 3:</strong> You'll get a .csv with only the 'URL
-                  Tags' column changed. Upload the new .csv file back to
-                  Facebook Ads Manager and your UTM parameters will magically
-                  appear!
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Container>
+          <Footer />
         </div>
       </div>
     );

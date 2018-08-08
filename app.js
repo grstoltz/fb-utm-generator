@@ -55,10 +55,6 @@ app.post('/upload', upload.any(), (req, res) => {
   };
 
   const jsontoCSV = arr => {
-    const fileName = req.files[0].originalname
-      .split('/')
-      .pop()
-      .replace(/(\.[\w\d_-]+)$/i, '_parsed.csv');
     csv.writeToString(arr, { headers: true }, function(err, data) {
       if (err) {
         res.send(err);
