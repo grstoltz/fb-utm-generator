@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 app.post('/upload', upload.any(), (req, res) => {
   const buffer = req.files[0].buffer.toString('utf8');
-  const parseCSV = async fileName => {
+  const parseCSV = async () => {
     const csvData = [];
     csv
       .fromString(buffer, { headers: true })
@@ -60,7 +60,7 @@ app.post('/upload', upload.any(), (req, res) => {
         res.send(err);
       } else {
         res.writeHead(200, {
-          'Content-Disposition': `attachment; filename=${fileName}`,
+          'Content-Disposition': `attachment; filename=parsed.csv`,
           'Content-Type': 'text/csv'
         });
         res.write(data);
