@@ -25,6 +25,8 @@ class Main extends React.Component {
   };
 
   onDrop = (acceptedFiles, rejectedFiles) => {
+    console.log('Accepted files ' + acceptedFiles);
+    console.log('Rejected files ' + rejectedFiles);
     this.setState({
       file: acceptedFiles[0],
       status: 'ready'
