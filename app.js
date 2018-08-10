@@ -24,16 +24,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post('/upload', upload.any(), async (req, res) => {
-  const buffer = await req.files[0].buffer.toString('utf8');
-  console.log(buffer);
+  const strBuffer = await req.files[0].buffer.toString('utf8');
+  // console.log(strBuffer);
   const parseCSV = () => {
-    const csvData = [];
+    let csvData = [];
     csv
-      .fromString(buffer, {
-        headers: true
+      .fromString(strBuffer, {
+        headers: true,
+        delimiter: '\t'
       })
       .on('data', data => {
-        csvData.push(data);
+        console.log(data);
+
+        csvData.push(data.toString('utf8'));
       })
       .on('data-invalid', () => {
         console.log('error');
@@ -77,7 +80,7 @@ app.post('/upload', upload.any(), async (req, res) => {
       }
     });
   };
-  parseCSV(buffer);
+  parseCSV(strBuffer);
 });
 
 app.get('*', (req, res) => {
