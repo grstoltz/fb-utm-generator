@@ -137,7 +137,7 @@ class Main extends React.Component {
                   <Dropzone
                     style={dropzoneStyle}
                     activeStyle={{ ...dropzoneStyle, borderColor: '#2185d0' }}
-                    accept="text/csv, text/txt"
+                    accept="text/csv, text/txt, application/vnd.ms-excel"
                     onDrop={files => this.onDrop(files)}
                   >
                     {this.state.status === 'loading' ? (
