@@ -25,7 +25,6 @@ class Main extends React.Component {
   };
 
   onDrop = files => {
-    console.log(files);
     this.setState({
       file: files[0],
       status: 'ready'
