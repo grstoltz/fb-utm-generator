@@ -28,12 +28,17 @@ app.post('/upload', upload.any(), async (req, res) => {
   const parseCSV = () => {
     const csvData = [];
     csv
-      .fromString(buffer, { strictColumnHandling: true, headers: true })
+      .fromStream(req.files[0].buffer, {
+        headers: true
+      })
       .on('data', data => {
         csvData.push(data);
       })
       .on('data-invalid', () => {
-        console.log(error);
+        console.log('error');
+      })
+      .on('error', err => {
+        console.log(err);
       })
       .on('end', () => {
         processArr(csvData);
