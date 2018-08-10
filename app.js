@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const csv = require('fast-csv');
 const multer = require('multer');
 const cors = require('cors');
+const utf8 = require('utf8');
 
 const storage = multer.memoryStorage();
 
@@ -24,18 +25,38 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post('/upload', upload.any(), async (req, res) => {
-  const strBuffer = await req.files[0].buffer.toString('utf8');
-  // console.log(strBuffer);
-  const parseCSV = () => {
+  console.log(req.files[0]);
+  const strBuffer = await req.files[0].buffer.toString('utf-8');
+
+  const sanitizeInput = string => {
     let csvData = [];
     csv
-      .fromString(strBuffer, {
+      .fromString(string, {
         headers: true,
         delimiter: '\t'
+        //prettier-ignore
       })
       .on('data', data => {
-        console.log(data);
+        csvData.push(data);
+      })
+      .on('data-invalid', () => {
+        console.log('error');
+      })
+      .on('error', err => {
+        console.log(err);
+      })
+      .on('end', () => {
+        jsontoCSV(csvData);
+      });
+  };
 
+  const parseCSV = str => {
+    let csvData = [];
+    csv
+      .fromString(str, {
+        headers: true
+      })
+      .on('data', data => {
         csvData.push(data);
       })
       .on('data-invalid', () => {
@@ -47,6 +68,21 @@ app.post('/upload', upload.any(), async (req, res) => {
       .on('end', () => {
         processArr(csvData);
       });
+  };
+
+  const sendCSV = arr => {
+    csv.writeToString(arr, { headers: true }, function(err, data) {
+      if (err) {
+        res.send(err);
+      } else {
+        res.writeHead(200, {
+          'Content-Disposition': `attachment; filename=parsed.csv`,
+          'Content-Type': 'text/csv'
+        });
+        res.write(data);
+        res.end();
+      }
+    });
   };
 
   const processArr = async arr => {
@@ -63,24 +99,15 @@ app.post('/upload', upload.any(), async (req, res) => {
       )}&utm_content=${encodeURI(adName)}`;
       element['URL Tags'] = utmString;
     });
-    jsontoCSV(arr);
+    sendCSV(arr);
   };
 
   const jsontoCSV = arr => {
     csv.writeToString(arr, { headers: true }, function(err, data) {
-      if (err) {
-        res.send(err);
-      } else {
-        res.writeHead(200, {
-          'Content-Disposition': `attachment; filename=parsed.csv`,
-          'Content-Type': 'text/csv'
-        });
-        res.write(data);
-        res.end();
-      }
+      parseCSV(data);
     });
   };
-  parseCSV(strBuffer);
+  sanitizeInput(strBuffer);
 });
 
 app.get('*', (req, res) => {
