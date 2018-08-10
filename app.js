@@ -36,7 +36,7 @@ app.post('/upload', upload.any(), async (req, res) => {
       .on('data', data => {
         console.log(data);
 
-        csvData.push(data.toString('utf8'));
+        csvData.push(data);
       })
       .on('data-invalid', () => {
         console.log('error');
