@@ -139,7 +139,7 @@ class Main extends React.Component {
                     style={dropzoneStyle}
                     activeStyle={{ ...dropzoneStyle, borderColor: '#2185d0' }}
                     // accept="text/csv, text/txt, application/vnd.ms-excel, text/x-csv, text/plain"
-                    onDrop={this.handleDrop}
+                    onDrop={this.onDrop}
                   >
                     {this.state.status === 'loading' ? (
                       <Dimmer active inverted>
