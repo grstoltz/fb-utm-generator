@@ -24,11 +24,11 @@ class Main extends React.Component {
     medium: 'cpc'
   };
 
-  onDrop = (acceptedFiles, rejectedFiles) => {
+  onDrop = files => {
     console.log('Accepted files ' + acceptedFiles);
     console.log('Rejected files ' + rejectedFiles);
     this.setState({
-      file: acceptedFiles[0],
+      file: files,
       status: 'ready'
     });
   };
@@ -139,8 +139,8 @@ class Main extends React.Component {
                   <Dropzone
                     style={dropzoneStyle}
                     activeStyle={{ ...dropzoneStyle, borderColor: '#2185d0' }}
-                   // accept="text/csv, text/txt, application/vnd.ms-excel, text/x-csv, text/plain"
-                    onDrop={files => this.onDrop(files)}
+                    // accept="text/csv, text/txt, application/vnd.ms-excel, text/x-csv, text/plain"
+                    onDrop={this.handleDrop}
                   >
                     {this.state.status === 'loading' ? (
                       <Dimmer active inverted>
