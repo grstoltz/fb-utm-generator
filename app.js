@@ -25,10 +25,11 @@ app.use(bodyParser.json());
 
 app.post('/upload', upload.any(), async (req, res) => {
   const buffer = await req.files[0].buffer.toString('utf8');
+  console.log(buffer);
   const parseCSV = () => {
     const csvData = [];
     csv
-      .fromStream(req.files[0].buffer, {
+      .fromString(buffer, {
         headers: true
       })
       .on('data', data => {
