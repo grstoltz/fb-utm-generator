@@ -23,14 +23,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.post('/upload', upload.any(), (req, res) => {
-  const buffer = req.files[0].buffer.toString('utf8');
-  const parseCSV = async () => {
+app.post('/upload', upload.any(), async (req, res) => {
+  const buffer = await req.files[0].buffer.toString('utf8');
+  const parseCSV = () => {
     const csvData = [];
     csv
-      .fromString(buffer, { headers: true })
+      .fromString(buffer, { strictColumnHandling: true, headers: true })
       .on('data', data => {
         csvData.push(data);
+      })
+      .on('data-invalid', () => {
+        console.log(error);
       })
       .on('end', () => {
         processArr(csvData);
