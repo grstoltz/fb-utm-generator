@@ -14,6 +14,7 @@ import {
   Input
 } from 'semantic-ui-react';
 import Footer from './Footer';
+import d3 from 'd3-dsv';
 
 class Main extends React.Component {
   state = {
@@ -42,7 +43,7 @@ class Main extends React.Component {
     const fileName = this.state.file.name
       .split('/')
       .pop()
-      .replace(/(\.[\w\d_-]+)$/i, '_parsed.csv');
+      .replace(/(\.[\w\d_-]+)$/i, '_parsed.tsv');
     const url = '/upload';
     const formData = new FormData();
     formData.append('file', this.state.file);
