@@ -27,7 +27,7 @@ const Footer = () => (
               >
                 ☕
               </span>
-              by Grant Stoltz by{' '}
+              by Grant Stoltz
               {/* <a href="https://www.grantstoltz.com">Grant Stoltz</a> */}
             </Header>
           </Grid.Column>
