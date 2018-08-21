@@ -14,7 +14,7 @@ import {
   Input
 } from 'semantic-ui-react';
 import Footer from './Footer';
-import d3 from 'd3-dsv';
+import Content from './Content';
 
 class Main extends React.Component {
   state = {
@@ -43,7 +43,7 @@ class Main extends React.Component {
     const fileName = this.state.file.name
       .split('/')
       .pop()
-      .replace(/(\.[\w\d_-]+)$/i, '_parsed.tsv');
+      .replace(/(\.[\w\d_-]+)$/i, '_parsed.txt');
     const url = '/upload';
     const formData = new FormData();
     formData.append('file', this.state.file);
@@ -85,15 +85,13 @@ class Main extends React.Component {
 
     return (
       <div>
-        <div>
-          <Menu color="blue">
-            <Container>
-              <Menu.Item as="a" header>
-                Facebook Ads UTM Generator
-              </Menu.Item>
-            </Container>
-          </Menu>
-        </div>
+        <Menu color="blue">
+          <Container>
+            <Menu.Item as="a" header>
+              Facebook Ads UTM Generator
+            </Menu.Item>
+          </Container>
+        </Menu>
         <div className="upload-form">
           <Container style={{ marginTop: '5em' }}>
             <Grid
@@ -138,7 +136,7 @@ class Main extends React.Component {
                   <Dropzone
                     style={dropzoneStyle}
                     activeStyle={{ ...dropzoneStyle, borderColor: '#2185d0' }}
-                    // accept="text/csv, text/txt, application/vnd.ms-excel, text/x-csv, text/plain"
+                    accept="text/csv, text/txt, application/vnd.ms-excel, text/x-csv, text/plain"
                     onDrop={this.onDrop}
                   >
                     {this.state.status === 'loading' ? (
@@ -176,8 +174,9 @@ class Main extends React.Component {
               </Grid.Row>
             </Grid>
           </Container>
-          <Footer />
+          <Content />
         </div>
+        <Footer />
       </div>
     );
   }
